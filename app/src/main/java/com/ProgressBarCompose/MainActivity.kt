@@ -41,6 +41,10 @@ class MainActivity : ComponentActivity() {
                         onValueChange = viewModel::updateValueToApply,
                         onApplyValue = viewModel::applyValue,
                         onToggleApplyValues = viewModel::toggleApplyValuesExpanded,
+                        onIntervalsExpandChange = viewModel::toggleApplyIntervalsExpanded,
+                        onIntervalChangeValue = viewModel::updateIntervalChangeValue,
+                        onIntervalSecondsChange = viewModel::updateIntervalSeconds,
+                        onIntervalEnabledChange = viewModel::setIntervalEnabled,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

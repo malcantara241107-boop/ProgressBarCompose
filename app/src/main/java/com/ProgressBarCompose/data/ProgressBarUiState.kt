@@ -1,5 +1,20 @@
 package com.ProgressBarCompose.data
 
+enum class IntervalValidationError {
+    EMPTY,
+    INVALID_FORMAT,
+    TOO_SMALL,
+    TOO_LARGE
+}
+
+data class IntervalConfig(
+    val id: Int,
+    val changeValue: String = "5",
+    val intervalSeconds: String = "1",
+    val enabled: Boolean = false,
+    val validationError: IntervalValidationError? = null
+)
+
 data class ProgressBarUiState(
     val title: String = "Progreso",
 
@@ -16,5 +31,30 @@ data class ProgressBarUiState(
     val borderColor: Long = 0xFF333333,
 
     val valueToApply: String = "",
-    val applyValuesExpanded: Boolean = true
+    val applyValuesExpanded: Boolean = true,
+
+    val intervals: List<IntervalConfig> = listOf(
+        IntervalConfig(
+            id = 1,
+            changeValue = "5",
+            intervalSeconds = "1"
+        ),
+        IntervalConfig(
+            id = 2,
+            changeValue = "5",
+            intervalSeconds = "2"
+        ),
+        IntervalConfig(
+            id = 3,
+            changeValue = "-5",
+            intervalSeconds = "5"
+        ),
+        IntervalConfig(
+            id = 4,
+            changeValue = "10",
+            intervalSeconds = "10"
+        )
+    ),
+
+    val applyIntervalsExpanded: Boolean = true
 )

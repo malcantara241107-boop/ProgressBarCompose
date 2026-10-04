@@ -29,6 +29,12 @@ fun ProgressBarScreen(
     onValueChange: (String) -> Unit,
     onApplyValue: () -> Unit,
     onToggleApplyValues: () -> Unit,
+
+    // Callbacks para INTERVALOS de BottonContent.kt
+    onIntervalsExpandChange: () -> Unit,
+    onIntervalChangeValue: (Int, String) -> Unit,
+    onIntervalSecondsChange: (Int, String) -> Unit,
+    onIntervalEnabledChange: (Int, Boolean) -> Unit,
     modifier: Modifier = Modifier
 )
 {
@@ -66,9 +72,17 @@ fun ProgressBarScreen(
             BottomContent(
                 expanded = uiState.applyValuesExpanded,
                 valueToApply = uiState.valueToApply,
+                intervalsExpanded = uiState.applyIntervalsExpanded,
+                intervals = uiState.intervals,
                 onExpandChange = onToggleApplyValues,
                 onValueChange = onValueChange,
-                onApplyClick = onApplyValue
+                onApplyClick = onApplyValue,
+
+                // Callbacks para INTERVALOS de BottonContent.kt
+                onIntervalsExpandChange = onIntervalsExpandChange,
+                onIntervalChangeValue = onIntervalChangeValue,
+                onIntervalSecondsChange = onIntervalSecondsChange,
+                onIntervalEnabledChange = onIntervalEnabledChange
             )
         }
     }

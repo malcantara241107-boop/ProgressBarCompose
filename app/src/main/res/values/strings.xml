@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">My Application</string>
+
+    <!-- Recursos para validaciones -->
+    <string name="interval_error_empty">Ingresa un intervalo.</string>
+    <string name="interval_error_invalid">Ingresa un número válido.</string>
+    <string name="interval_error_too_small">El intervalo mínimo es 0.01 segundos.</string>
+    <string name="interval_error_too_large">El intervalo máximo es 256 segundos.</string>
 </resources>
