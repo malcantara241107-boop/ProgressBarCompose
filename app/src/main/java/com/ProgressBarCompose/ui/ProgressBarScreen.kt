@@ -26,8 +26,12 @@ import com.ProgressBarCompose.ui.components.ProgressBarDisplay
 fun ProgressBarScreen(
     uiState: ProgressBarUiState,
     onSettingsClick: () -> Unit,
+    onValueChange: (String) -> Unit,
+    onApplyValue: () -> Unit,
+    onToggleApplyValues: () -> Unit,
     modifier: Modifier = Modifier
-) {
+)
+{
     Column(
         modifier = modifier.fillMaxSize()
     ) {
@@ -59,7 +63,13 @@ fun ProgressBarScreen(
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
         ) {
-            BottomContent()
+            BottomContent(
+                expanded = uiState.applyValuesExpanded,
+                valueToApply = uiState.valueToApply,
+                onExpandChange = onToggleApplyValues,
+                onValueChange = onValueChange,
+                onApplyClick = onApplyValue
+            )
         }
     }
 }

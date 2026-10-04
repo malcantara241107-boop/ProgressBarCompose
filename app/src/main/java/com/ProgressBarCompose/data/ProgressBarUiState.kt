@@ -13,5 +13,8 @@ data class ProgressBarUiState(
 
     val progressColor: Long = 0xFF4CAF50,
     val backgroundColor: Long = 0xFFE0E0E0,
-    val borderColor: Long = 0xFF333333
+    val borderColor: Long = 0xFF333333,
+
+    val valueToApply: String = "",
+    val applyValuesExpanded: Boolean = true
 )

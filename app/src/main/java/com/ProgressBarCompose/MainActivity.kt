@@ -38,6 +38,9 @@ class MainActivity : ComponentActivity() {
                         onSettingsClick = {
                             // La configuración se implementará posteriormente.
                         },
+                        onValueChange = viewModel::updateValueToApply,
+                        onApplyValue = viewModel::applyValue,
+                        onToggleApplyValues = viewModel::toggleApplyValuesExpanded,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
