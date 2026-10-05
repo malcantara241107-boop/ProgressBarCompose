@@ -35,17 +35,30 @@ class MainActivity : ComponentActivity() {
 
                     ProgressBarScreen(
                         uiState = uiState,
-                        onSettingsClick = {
-                            // La configuración se implementará posteriormente.
-                        },
+                        onSettingsClick = viewModel::openSettings,
+                        onCloseSettings = viewModel::closeSettings,
                         onValueChange = viewModel::updateValueToApply,
                         onApplyValue = viewModel::applyValue,
                         onToggleApplyValues = viewModel::toggleApplyValuesExpanded,
+                        // Calbacks para INTERVALOS
                         onIntervalsExpandChange = viewModel::toggleApplyIntervalsExpanded,
                         onIntervalChangeValue = viewModel::updateIntervalChangeValue,
                         onIntervalSecondsChange = viewModel::updateIntervalSeconds,
                         onIntervalEnabledChange = viewModel::setIntervalEnabled,
-                        modifier = Modifier.padding(innerPadding)
+                        // Callbacks para CONFIGURACIONES
+                        onSettingsTitleChange = viewModel::updateSettingsTitle,
+                        onSettingsShowImageChange = viewModel::updateSettingsShowImage,
+                        onSettingsShowCurrentValueChange = viewModel::updateSettingsShowCurrentValue,
+                        onSettingsShowMaxValueChange = viewModel::updateSettingsShowMaxValue,
+                        modifier = Modifier.padding(innerPadding),
+                        onSettingsMaxValueChange = viewModel::updateSettingsMaxValue,
+                        onSettingsMinValueChange = viewModel::updateSettingsMinValue,
+                        onSettingsCurrentValueChange = viewModel::updateSettingsCurrentValue,
+                        onSettingsProgressColorChange = viewModel::updateSettingsProgressColor,
+                        onSettingsBackgroundColorChange = viewModel::updateSettingsBackgroundColor,
+                        onSettingsBorderColorChange = viewModel::updateSettingsBorderColor,
+                        onApplySettings = viewModel::applySettings,
+                        onResetSettings = viewModel::resetSettingsDraft
                     )
                 }
             }

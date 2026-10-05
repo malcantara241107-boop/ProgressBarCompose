@@ -1,7 +1,6 @@
 package com.ProgressBarCompose.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.ProgressBarCompose.data.ProgressBarUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,8 +11,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-// Importación para la validación de Intervalos
-import com.ProgressBarCompose.data.IntervalValidationError
+import com.ProgressBarCompose.data.IntervalValidationError  // Importación para la validación de Intervalos
+import com.ProgressBarCompose.data.ProgressBarSettings  //Sirve para abrir configuraciones
+import com.ProgressBarCompose.data.ProgressBarUiState
+import com.ProgressBarCompose.data.SettingsValidationError
 
 class ProgressBarViewModel : ViewModel() {
 
@@ -25,6 +26,11 @@ class ProgressBarViewModel : ViewModel() {
     private companion object {
         const val MIN_INTERVAL_SECONDS = 0.01
         const val MAX_INTERVAL_SECONDS = 256.0
+
+        // Constantes de colores por defecto
+        //const val DEFAULT_PROGRESS_COLOR = 0xFF4CAF50
+        //const val DEFAULT_BACKGROUND_COLOR = 0xFFE0E0E0
+        //const val DEFAULT_BORDER_COLOR = 0xFF333333
     }
 
     // Variable para Intervalos
@@ -260,5 +266,235 @@ class ProgressBarViewModel : ViewModel() {
 
             else -> null
         }
+    }
+
+    // Funciones para abrir CONFIGURACIONES
+    fun openSettings() {
+        val currentState = _uiState.value
+
+        val settings = ProgressBarSettings(
+            title = currentState.title,
+            showImage = currentState.showImage,
+            showCurrentValue = currentState.showCurrentValue,
+            showMaxValue = currentState.showMaxValue,
+            progressColor = currentState.progressColor,
+            backgroundColor = currentState.backgroundColor,
+            borderColor = currentState.borderColor,
+            maxValue = currentState.maxValue.toString(),
+            minValue = currentState.minValue.toString(),
+            currentValue = currentState.currentValue.toString(),
+            multicolorEnabled = false
+        )
+
+        _uiState.value = currentState.copy(
+            settingsDialogVisible = true,
+            settingsDraft = settings
+        )
+    }
+
+    // Funcion para restablecer configuraciones
+    fun resetSettingsDraft() {
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = ProgressBarSettings()
+        )
+    }
+
+    // Cierra CONFIGURACIONES
+    fun closeSettings() {
+        _uiState.value = _uiState.value.copy(
+            settingsDialogVisible = false
+        )
+    }
+
+    // CONFIGURACIONES - TITULO: Cambia el nombre de la barra.
+    fun updateSettingsTitle(value: String) {
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = _uiState.value.settingsDraft.copy(
+                title = value
+            )
+        )
+    }
+
+    // CONFIGURACIONES - MOSTRAR IMAGEN: Cambia la visibilidad de la imagen mostrada en la barra.
+    fun updateSettingsShowImage(value: Boolean) {
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = _uiState.value.settingsDraft.copy(
+                showImage = value
+            )
+        )
+    }
+
+    // CONFIGURACIONES - MOSTRAR VALOR ACTUAL: Al activarse, la barra mostrara el valor actual que tenga.
+    fun updateSettingsShowCurrentValue(value: Boolean) {
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = _uiState.value.settingsDraft.copy(
+                showCurrentValue = value,
+                showMaxValue = if (value) {
+                    _uiState.value.settingsDraft.showMaxValue
+                } else {
+                    false
+                }
+            )
+        )
+    }
+
+    // CONFIGURACIONES - MOSTRAR VALOR MAXIMO: Al activarse MOSTRAR VALOR ACTUAL y esta, adicionalmente se mostrara el valor maximo que puede adquirir la barra.
+    fun updateSettingsShowMaxValue(value: Boolean) {
+        if (!_uiState.value.settingsDraft.showCurrentValue) {
+            return
+        }
+
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = _uiState.value.settingsDraft.copy(
+                showMaxValue = value
+            )
+        )
+    }
+
+    fun updateSettingsMaxValue(value: String) {
+        val filteredValue = value.filter { it.isDigit() }
+
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = _uiState.value.settingsDraft.copy(
+                maxValue = filteredValue
+            ),
+            settingsValidationError = null
+        )
+    }
+
+    fun updateSettingsMinValue(value: String) {
+        val filteredValue = value.filter { it.isDigit() || it == '-' }
+
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = _uiState.value.settingsDraft.copy(
+                minValue = filteredValue
+            ),
+            settingsValidationError = null
+        )
+    }
+
+    fun updateSettingsCurrentValue(value: String) {
+        val filteredValue = value.filter { it.isDigit() || it == '-' }
+
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = _uiState.value.settingsDraft.copy(
+                currentValue = filteredValue
+            ),
+            settingsValidationError = null
+        )
+    }
+
+    // CONFIGURACIONES - APLICAR CONFIGURACIONES: Aplica las configuraciones anteriormente establecidas.
+    fun applySettings() {
+        val draft = _uiState.value.settingsDraft
+
+        val minValue = draft.minValue.toLongOrNull()
+        val maxValue = draft.maxValue.toLongOrNull()
+        val currentValue = draft.currentValue.toLongOrNull()
+
+        val minLimit = -9_999_999L
+        val maxLimit = 9_999_999L
+
+        var minError: String? = null
+        var maxError: String? = null
+        var currentError: String? = null
+
+        if (minValue == null) {
+            minError = "Ingresa un valor mínimo válido."
+        } else if (minValue < minLimit) {
+            minError = "El mínimo permitido es -9,999,999."
+        }
+
+        if (maxValue == null) {
+            maxError = "Ingresa un valor máximo válido."
+        } else if (maxValue > maxLimit) {
+            maxError = "El máximo permitido es 9,999,999."
+        }
+
+        if (currentValue == null) {
+            currentError = "Ingresa un valor actual válido."
+        }
+
+        if (
+            minValue != null &&
+            maxValue != null &&
+            minValue >= maxValue
+        ) {
+            minError = "Debe ser menor que el valor máximo."
+            maxError = "Debe ser mayor que el valor mínimo."
+        }
+
+        if (
+            currentValue != null &&
+            minValue != null &&
+            currentValue < minValue
+        ) {
+            currentError = "Debe estar dentro del rango permitido."
+        }
+
+        if (
+            currentValue != null &&
+            maxValue != null &&
+            currentValue > maxValue
+        ) {
+            currentError = "Debe estar dentro del rango permitido."
+        }
+
+        val validationError = SettingsValidationError(
+            minValueError = minError,
+            maxValueError = maxError,
+            currentValueError = currentError
+        )
+
+        if (
+            minError != null ||
+            maxError != null ||
+            currentError != null
+        ) {
+            _uiState.value = _uiState.value.copy(
+                settingsValidationError = validationError
+            )
+            return
+        }
+
+        _uiState.value = _uiState.value.copy(
+            title = draft.title,
+            minValue = minValue!!,
+            maxValue = maxValue!!,
+            currentValue = currentValue!!,
+            showImage = draft.showImage,
+            showCurrentValue = draft.showCurrentValue,
+            showMaxValue = draft.showMaxValue,
+            progressColor = draft.progressColor,
+            backgroundColor = draft.backgroundColor,
+            borderColor = draft.borderColor,
+            settingsDialogVisible = false,
+            settingsValidationError = null
+        )
+    }
+
+    // Funciones para la parte de CONFIGURACION de Color Picker
+    fun updateSettingsProgressColor(value: Long) {
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = _uiState.value.settingsDraft.copy(
+                progressColor = value
+            )
+        )
+    }
+
+    fun updateSettingsBackgroundColor(value: Long) {
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = _uiState.value.settingsDraft.copy(
+                backgroundColor = value
+            )
+        )
+    }
+
+    fun updateSettingsBorderColor(value: Long) {
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = _uiState.value.settingsDraft.copy(
+                borderColor = value
+            )
+        )
     }
 }

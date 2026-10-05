@@ -20,12 +20,17 @@ import androidx.compose.ui.unit.dp
 import com.ProgressBarCompose.data.ProgressBarUiState
 import com.ProgressBarCompose.ui.components.BottomContent
 import com.ProgressBarCompose.ui.components.ProgressBarDisplay
+import com.ProgressBarCompose.ui.components.ProgressBarSettingsDialog   // Para la UI de CONFIGURACIÓN.
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProgressBarScreen(
     uiState: ProgressBarUiState,
+
+    // Abrir y cerrar modales
     onSettingsClick: () -> Unit,
+    onCloseSettings: () -> Unit,
+
     onValueChange: (String) -> Unit,
     onApplyValue: () -> Unit,
     onToggleApplyValues: () -> Unit,
@@ -35,7 +40,21 @@ fun ProgressBarScreen(
     onIntervalChangeValue: (Int, String) -> Unit,
     onIntervalSecondsChange: (Int, String) -> Unit,
     onIntervalEnabledChange: (Int, Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+
+    // Callbacks para CONFIGURACIONES
+    onSettingsTitleChange: (String) -> Unit,
+    onSettingsShowImageChange: (Boolean) -> Unit,
+    onSettingsShowCurrentValueChange: (Boolean) -> Unit,
+    onSettingsShowMaxValueChange: (Boolean) -> Unit,
+    onSettingsMaxValueChange: (String) -> Unit,
+    onSettingsMinValueChange: (String) -> Unit,
+    onSettingsCurrentValueChange: (String) -> Unit,
+    onSettingsProgressColorChange: (Long) -> Unit,
+    onSettingsBackgroundColorChange: (Long) -> Unit,
+    onSettingsBorderColorChange: (Long) -> Unit,
+    onApplySettings: () -> Unit,
+    onResetSettings: () -> Unit,
 )
 {
     Column(
@@ -83,6 +102,29 @@ fun ProgressBarScreen(
                 onIntervalChangeValue = onIntervalChangeValue,
                 onIntervalSecondsChange = onIntervalSecondsChange,
                 onIntervalEnabledChange = onIntervalEnabledChange
+            )
+        }
+        if (uiState.settingsDialogVisible) {
+            ProgressBarSettingsDialog(
+                settings = uiState.settingsDraft,
+                onDismiss = onCloseSettings,
+                onTitleChange = onSettingsTitleChange,
+                onShowImageChange = onSettingsShowImageChange,
+                onShowCurrentValueChange = onSettingsShowCurrentValueChange,
+                onShowMaxValueChange = onSettingsShowMaxValueChange,
+                onMaxValueChange = onSettingsMaxValueChange,
+                onMinValueChange = onSettingsMinValueChange,
+                onCurrentValueChange = onSettingsCurrentValueChange,
+                maxValueError = uiState.settingsValidationError?.maxValueError,
+                minValueError = uiState.settingsValidationError?.minValueError,
+                currentValueError = uiState.settingsValidationError?.currentValueError,
+
+                onProgressColorChange = onSettingsProgressColorChange,
+                onBackgroundColorChange = onSettingsBackgroundColorChange,
+                onBorderColorChange = onSettingsBorderColorChange,
+
+                onApplyChanges = onApplySettings,
+                onResetSettings = onResetSettings,
             )
         }
     }

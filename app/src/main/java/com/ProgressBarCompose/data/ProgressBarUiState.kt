@@ -15,6 +15,31 @@ data class IntervalConfig(
     val validationError: IntervalValidationError? = null
 )
 
+data class ProgressBarSettings(
+    val title: String = "Progreso",
+
+    val showImage: Boolean = true,
+    val showCurrentValue: Boolean = false,
+    val showMaxValue: Boolean = false,
+
+    val progressColor: Long = 0xFF4CAF50,
+    val backgroundColor: Long = 0xFFE0E0E0,
+    val borderColor: Long = 0xFF333333,
+
+    val maxValue: String = "100",
+    val minValue: String = "0",
+    val currentValue: String = "100",
+
+    val multicolorEnabled: Boolean = false
+)
+
+// Clase para la validación de errores en CONFIGURACIONES - LIMITES DE VALORES
+data class SettingsValidationError(
+    val minValueError: String? = null,
+    val maxValueError: String? = null,
+    val currentValueError: String? = null
+)
+
 data class ProgressBarUiState(
     val title: String = "Progreso",
 
@@ -56,5 +81,11 @@ data class ProgressBarUiState(
         )
     ),
 
-    val applyIntervalsExpanded: Boolean = true
+    val applyIntervalsExpanded: Boolean = true,
+
+    val settingsDialogVisible: Boolean = false,
+
+    val settingsDraft: ProgressBarSettings = ProgressBarSettings(),
+
+    val settingsValidationError: SettingsValidationError? = null
 )
