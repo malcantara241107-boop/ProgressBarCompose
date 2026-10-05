@@ -57,6 +57,8 @@ class MainActivity : ComponentActivity() {
                         onSettingsProgressColorChange = viewModel::updateSettingsProgressColor,
                         onSettingsBackgroundColorChange = viewModel::updateSettingsBackgroundColor,
                         onSettingsBorderColorChange = viewModel::updateSettingsBorderColor,
+                        onSettingsMulticolorEnabledChange = viewModel::updateSettingsMulticolorEnabled,
+                        onSettingsAnimationsEnabledChange = viewModel::updateSettingsAnimationsEnabled,
                         onApplySettings = viewModel::applySettings,
                         onResetSettings = viewModel::resetSettingsDraft
                     )

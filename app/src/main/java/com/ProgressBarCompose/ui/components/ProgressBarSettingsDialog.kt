@@ -52,6 +52,10 @@ fun ProgressBarSettingsDialog(
     onBackgroundColorChange: (Long) -> Unit,
     onBorderColorChange: (Long) -> Unit,
 
+    // Multicolor y Animación
+    onMulticolorEnabledChange: (Boolean) -> Unit,
+    onAnimationsEnabledChange: (Boolean) -> Unit,
+
     onApplyChanges: () -> Unit,
     // Reset
     onResetSettings: () -> Unit,
@@ -213,6 +217,47 @@ fun ProgressBarSettingsDialog(
                         }
                     }
                 )
+
+                Text(
+                    text = "Efectos",
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Cambio de color automático",
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    Switch(
+                        checked = settings.multicolorEnabled,
+                        onCheckedChange = onMulticolorEnabledChange
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Animación de progreso",
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    Switch(
+                        checked = settings.animationsEnabled,
+                        onCheckedChange = onAnimationsEnabledChange
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
                     text = stringResource(R.string.colors_section),

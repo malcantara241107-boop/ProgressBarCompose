@@ -53,6 +53,8 @@ fun ProgressBarScreen(
     onSettingsProgressColorChange: (Long) -> Unit,
     onSettingsBackgroundColorChange: (Long) -> Unit,
     onSettingsBorderColorChange: (Long) -> Unit,
+    onSettingsMulticolorEnabledChange: (Boolean) -> Unit,
+    onSettingsAnimationsEnabledChange: (Boolean) -> Unit,
     onApplySettings: () -> Unit,
     onResetSettings: () -> Unit,
 )
@@ -119,9 +121,14 @@ fun ProgressBarScreen(
                 minValueError = uiState.settingsValidationError?.minValueError,
                 currentValueError = uiState.settingsValidationError?.currentValueError,
 
+                // Colorpicker
                 onProgressColorChange = onSettingsProgressColorChange,
                 onBackgroundColorChange = onSettingsBackgroundColorChange,
                 onBorderColorChange = onSettingsBorderColorChange,
+
+                // Multicolor y Animaciones
+                onMulticolorEnabledChange = onSettingsMulticolorEnabledChange,
+                onAnimationsEnabledChange = onSettingsAnimationsEnabledChange,
 
                 onApplyChanges = onApplySettings,
                 onResetSettings = onResetSettings,

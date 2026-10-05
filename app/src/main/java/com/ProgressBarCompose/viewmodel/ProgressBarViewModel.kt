@@ -283,7 +283,8 @@ class ProgressBarViewModel : ViewModel() {
             maxValue = currentState.maxValue.toString(),
             minValue = currentState.minValue.toString(),
             currentValue = currentState.currentValue.toString(),
-            multicolorEnabled = false
+            multicolorEnabled = currentState.multicolorEnabled,
+            animationsEnabled = currentState.animationsEnabled
         )
 
         _uiState.value = currentState.copy(
@@ -468,6 +469,8 @@ class ProgressBarViewModel : ViewModel() {
             progressColor = draft.progressColor,
             backgroundColor = draft.backgroundColor,
             borderColor = draft.borderColor,
+            multicolorEnabled = draft.multicolorEnabled,
+            animationsEnabled = draft.animationsEnabled,
             settingsDialogVisible = false,
             settingsValidationError = null
         )
@@ -494,6 +497,22 @@ class ProgressBarViewModel : ViewModel() {
         _uiState.value = _uiState.value.copy(
             settingsDraft = _uiState.value.settingsDraft.copy(
                 borderColor = value
+            )
+        )
+    }
+
+    fun updateSettingsMulticolorEnabled(value: Boolean) {
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = _uiState.value.settingsDraft.copy(
+                multicolorEnabled = value
+            )
+        )
+    }
+
+    fun updateSettingsAnimationsEnabled(value: Boolean) {
+        _uiState.value = _uiState.value.copy(
+            settingsDraft = _uiState.value.settingsDraft.copy(
+                animationsEnabled = value
             )
         )
     }

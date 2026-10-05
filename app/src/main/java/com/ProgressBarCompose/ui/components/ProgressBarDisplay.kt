@@ -30,6 +30,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ProgressBarCompose.R
 import com.ProgressBarCompose.data.ProgressBarUiState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.runtime.getValue
+import androidx.compose.animation.core.snap
 
 @Composable
 fun ProgressBarDisplay(
@@ -43,6 +47,27 @@ fun ProgressBarDisplay(
                 (uiState.currentValue - uiState.minValue).toFloat() /
                         (uiState.maxValue - uiState.minValue).toFloat()
                 ).coerceIn(0f, 1f)
+    }
+
+    val animatedProgress by animateFloatAsState(
+        targetValue = progress,
+        animationSpec = if (uiState.animationsEnabled) {
+            tween(durationMillis = 500)
+        } else {
+            snap()
+        },
+        label = "progressAnimation"
+    )
+
+    // Barra Multicolor
+    val progressColor = if (uiState.multicolorEnabled) {
+        when {
+            progress < 0.33f -> Color.Red
+            progress < 0.66f -> Color.Yellow
+            else -> Color(uiState.progressColor)
+        }
+    } else {
+        Color(uiState.progressColor)
     }
 
     Card(
@@ -101,10 +126,10 @@ fun ProgressBarDisplay(
             ) {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth(progress)
+                        .fillMaxWidth(animatedProgress)
                         .fillMaxHeight()
                         .background(
-                            color = Color(uiState.progressColor),
+                            color = progressColor,
                             shape = RoundedCornerShape(2.dp)
                         )
                 )

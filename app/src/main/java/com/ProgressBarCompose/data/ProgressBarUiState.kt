@@ -30,7 +30,8 @@ data class ProgressBarSettings(
     val minValue: String = "0",
     val currentValue: String = "100",
 
-    val multicolorEnabled: Boolean = false
+    val multicolorEnabled: Boolean = false,
+    val animationsEnabled: Boolean = false
 )
 
 // Clase para la validación de errores en CONFIGURACIONES - LIMITES DE VALORES
@@ -87,5 +88,8 @@ data class ProgressBarUiState(
 
     val settingsDraft: ProgressBarSettings = ProgressBarSettings(),
 
-    val settingsValidationError: SettingsValidationError? = null
+    val settingsValidationError: SettingsValidationError? = null,
+
+    val multicolorEnabled: Boolean = false,
+    val animationsEnabled: Boolean = false
 )
