@@ -131,8 +131,16 @@ class ProgressBarViewModel : ViewModel() {
             intervalJobs.remove(intervalId)
 
             updateIntervalEnabledState(intervalId, false)
+
+            _uiState.value = _uiState.value.copy(
+                animationDuration = calculateAnimationDuration()
+            )
         } else {
             restartIntervalIfNeeded(intervalId)
+
+            _uiState.value = _uiState.value.copy(
+                animationDuration = calculateAnimationDuration()
+            )
         }
     }
 
@@ -146,6 +154,11 @@ class ProgressBarViewModel : ViewModel() {
             intervalJobs.remove(intervalId)
 
             updateIntervalEnabledState(intervalId, false)
+
+            _uiState.value = _uiState.value.copy(
+                animationDuration = calculateAnimationDuration()
+            )
+
             return
         }
 
@@ -180,6 +193,10 @@ class ProgressBarViewModel : ViewModel() {
             intervalId = intervalId,
             changeValue = changeValue,
             intervalSeconds = intervalSeconds
+        )
+        // La animación se adapta al intervalo mas rapido.
+        _uiState.value = _uiState.value.copy(
+            animationDuration = calculateAnimationDuration()
         )
     }
 
@@ -515,5 +532,26 @@ class ProgressBarViewModel : ViewModel() {
                 animationsEnabled = value
             )
         )
+    }
+
+    // Se encarga de encontrar el intervalo mas rapido activado, sirve para evitar errores con la animación de barra.
+    private fun getFastestIntervalSeconds(): Double? {
+        return _uiState.value.intervals
+            .filter { it.enabled }
+            .minOfOrNull { it.intervalSeconds.toDoubleOrNull() ?: Double.MAX_VALUE }
+    }
+
+    // Cambia los MS de la animación de barra dependiendo del intervalor activo mas rapido.
+    private fun calculateAnimationDuration(): Int {
+        val fastestInterval = getFastestIntervalSeconds()
+            ?: return 500
+
+        return when {
+            fastestInterval >= 1.0 -> 500
+            fastestInterval >= 0.5 -> 250
+            fastestInterval >= 0.1 -> 100
+            fastestInterval >= 0.05 -> 50
+            else -> 0 // No tiene sentido animar algo que ya va a velocidades impresionantes.
+        }
     }
 }

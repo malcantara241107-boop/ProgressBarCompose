@@ -64,6 +64,7 @@ fun ProgressBarScreen(
     ) {
 
         TopAppBar(
+            modifier = Modifier.padding(top = 0.dp),
             title = {
                 Text(text = "Progress Bar")
             },
@@ -81,7 +82,10 @@ fun ProgressBarScreen(
 
         ProgressBarDisplay(
             uiState = uiState,
-            modifier = Modifier.padding(top = 8.dp)
+            modifier = Modifier.padding(
+                top = 8.dp,
+                bottom = 16.dp
+            )
         )
 
         Box(

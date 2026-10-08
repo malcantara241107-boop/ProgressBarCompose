@@ -20,6 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.Alignment
+import androidx.compose.material3.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 @Composable
 fun ApplyValuesSection(
@@ -39,25 +45,36 @@ fun ApplyValuesSection(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
-            Row(
-                modifier = Modifier.fillMaxWidth()
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                shape = RoundedCornerShape(12.dp)
             ) {
-                Text(
-                    text = "Aplicar Valores",
-                    modifier = Modifier.weight(1f)
-                )
-
-                IconButton(
-                    onClick = onExpandChange
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = if (expanded) {
-                            Icons.Default.ArrowDropUp
-                        } else {
-                            Icons.Default.ArrowDropDown
-                        },
-                        contentDescription = "Expandir o contraer"
+                    Text(
+                        text = "Aplicar Valores",
+                        modifier = Modifier.weight(1f),
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold
                     )
+
+                    IconButton(
+                        onClick = onExpandChange
+                    ) {
+                        Icon(
+                            imageVector = if (expanded) {
+                                Icons.Default.ArrowDropUp
+                            } else {
+                                Icons.Default.ArrowDropDown
+                            },
+                            contentDescription = "Expandir o contraer"
+                        )
+                    }
                 }
             }
 

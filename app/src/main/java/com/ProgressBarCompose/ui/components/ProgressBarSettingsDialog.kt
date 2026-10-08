@@ -31,6 +31,17 @@ import com.ProgressBarCompose.R
 import com.ProgressBarCompose.ui.components.ColorPicker
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Surface
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.OutlinedButton
 
 
 @Composable
@@ -63,11 +74,25 @@ fun ProgressBarSettingsDialog(
     Dialog(
         onDismissRequest = onDismiss
     ) {
+        /*
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(max = 650.dp)
+                .heightIn(max = 650.dp),
+            /*
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            )
+             */
         ) {
+         */
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 650.dp),
+            shape = RoundedCornerShape(6.dp)
+        ) {
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -77,12 +102,16 @@ fun ProgressBarSettingsDialog(
             ) {
 
                 Row(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "Configurar Barra",
                         modifier = Modifier.weight(1f),
-                        style = MaterialTheme.typography.headlineSmall
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.SemiBold
                     )
 
                     IconButton(
@@ -95,10 +124,20 @@ fun ProgressBarSettingsDialog(
                     }
                 }
 
-                Text(
-                    text = "Personalización",
-                    style = MaterialTheme.typography.titleMedium
-                )
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.surfaceVariant
+                ) {
+                    Text(
+                        text = "Visualización",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
 
                 OutlinedTextField(
                     value = settings.title,
@@ -111,12 +150,17 @@ fun ProgressBarSettingsDialog(
                 )
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = "Mostrar Imagen",
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium
                     )
 
                     Switch(
@@ -126,12 +170,17 @@ fun ProgressBarSettingsDialog(
                 }
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = "Mostrar valor actual",
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium
                     )
 
                     Switch(
@@ -141,12 +190,17 @@ fun ProgressBarSettingsDialog(
                 }
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "Mostrar valor máximo actual",
-                        modifier = Modifier.weight(1f)
+                        text = "Mostrar valor máximo",
+                        modifier = Modifier.weight(1f),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium
                     )
 
                     Switch(
@@ -156,10 +210,26 @@ fun ProgressBarSettingsDialog(
                     )
                 }
 
-                Text(
-                    text = "Valores",
-                    style = MaterialTheme.typography.titleMedium
+                // Barra divisora
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color.LightGray
                 )
+
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.surfaceVariant
+                ) {
+                    Text(
+                        text = "Valores",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
 
                 OutlinedTextField(
                     value = settings.maxValue,
@@ -175,25 +245,6 @@ fun ProgressBarSettingsDialog(
                     isError = maxValueError != null,
                     supportingText = {
                         maxValueError?.let {
-                            Text(it)
-                        }
-                    }
-                )
-
-                OutlinedTextField(
-                    value = settings.minValue,
-                    onValueChange = onMinValueChange,
-                    modifier = Modifier.fillMaxWidth(),
-                    label = {
-                        Text("Valor mínimo")
-                    },
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    ),
-                    isError = minValueError != null,
-                    supportingText = {
-                        minValueError?.let {
                             Text(it)
                         }
                     }
@@ -218,20 +269,60 @@ fun ProgressBarSettingsDialog(
                     }
                 )
 
-                Text(
-                    text = "Efectos",
-                    style = MaterialTheme.typography.titleMedium
+                OutlinedTextField(
+                    value = settings.minValue,
+                    onValueChange = onMinValueChange,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = {
+                        Text("Valor mínimo")
+                    },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    isError = minValueError != null,
+                    supportingText = {
+                        minValueError?.let {
+                            Text(it)
+                        }
+                    }
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                // Barra divisora
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color.LightGray
+                )
+
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.surfaceVariant
+                ) {
+                    Text(
+                        text = "Efectos",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+
+                // Spacer(modifier = Modifier.height(4.dp))
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "Cambio de color automático",
-                        modifier = Modifier.weight(1f)
+                        text = "Fases de colores",
+                        modifier = Modifier.weight(1f),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium
                     )
 
                     Switch(
@@ -240,15 +331,20 @@ fun ProgressBarSettingsDialog(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(4.dp))
+                // Spacer(modifier = Modifier.height(4.dp))
 
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = "Animación de progreso",
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium
                     )
 
                     Switch(
@@ -257,15 +353,42 @@ fun ProgressBarSettingsDialog(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                // Spacer(modifier = Modifier.height(16.dp))
 
-                Text(
-                    text = stringResource(R.string.colors_section),
-                    style = MaterialTheme.typography.titleMedium
+                // Barra divisora
+                HorizontalDivider(
+                    thickness = 1.dp,
+                    color = Color.LightGray
                 )
 
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.surfaceVariant
+                ) {
+                    Text(
+                        text = stringResource(R.string.colors_section),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        textAlign = TextAlign.Center,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+
+                /*
                 Text(
-                    text = stringResource(R.string.progress_color)
+                    text = stringResource(R.string.colors_section),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontSize = 17.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+                */
+
+                Text(
+                    text = stringResource(R.string.progress_color),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium
                 )
 
                 ColorPicker(
@@ -274,7 +397,9 @@ fun ProgressBarSettingsDialog(
                 )
 
                 Text(
-                    text = stringResource(R.string.background_color)
+                    text = stringResource(R.string.background_color),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium
                 )
 
                 ColorPicker(
@@ -283,7 +408,9 @@ fun ProgressBarSettingsDialog(
                 )
 
                 Text(
-                    text = stringResource(R.string.border_color)
+                    text = stringResource(R.string.border_color),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium
                 )
 
                 ColorPicker(
@@ -291,10 +418,12 @@ fun ProgressBarSettingsDialog(
                     onColorSelected = onBorderColorChange
                 )
 
+                /*
                 Text(
                     text = stringResource(R.string.colors_section),
                     style = MaterialTheme.typography.titleMedium
                 )
+                */
 
                 Spacer(modifier = Modifier.height(12.dp))
 
@@ -305,9 +434,7 @@ fun ProgressBarSettingsDialog(
                     Text("Aplicar Cambios")
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Button(
+                OutlinedButton(
                     onClick = onResetSettings,
                     modifier = Modifier.fillMaxWidth()
                 ) {

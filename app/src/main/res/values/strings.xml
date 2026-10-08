@@ -8,8 +8,8 @@
     <string name="interval_error_too_large">El intervalo máximo es 256 segundos.</string>
 
     <!-- Recursos para colores -->
-    <string name="colors_section">Colores</string>
-    <string name="progress_color">Color del progreso</string>
-    <string name="background_color">Color del fondo</string>
-    <string name="border_color">Color del borde</string>
+    <string name="colors_section">Personalización de colores</string>
+    <string name="progress_color">Progreso</string>
+    <string name="background_color">Fondo</string>
+    <string name="border_color">Borde</string>
 </resources>

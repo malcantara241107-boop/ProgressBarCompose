@@ -52,7 +52,7 @@ fun ProgressBarDisplay(
     val animatedProgress by animateFloatAsState(
         targetValue = progress,
         animationSpec = if (uiState.animationsEnabled) {
-            tween(durationMillis = 500)
+            tween(durationMillis = uiState.animationDuration)
         } else {
             snap()
         },

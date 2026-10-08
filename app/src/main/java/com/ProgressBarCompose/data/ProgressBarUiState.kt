@@ -45,6 +45,7 @@ data class ProgressBarUiState(
     val title: String = "Progreso",
 
     val currentValue: Long = 100L,
+    val animationDuration: Int = 500,
     val minValue: Long = 0L,
     val maxValue: Long = 100L,
 

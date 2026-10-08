@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.ArrowDropUp
@@ -12,10 +13,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.sp
 import com.ProgressBarCompose.data.IntervalConfig
 
 @Composable
@@ -44,6 +49,7 @@ fun BottomContent(
 
         Text(
             text = "Controles",
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
 
@@ -63,25 +69,36 @@ fun BottomContent(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
 
-                Row(
-                    modifier = Modifier.fillMaxWidth()
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text(
-                        text = "Aplicar Intervalos",
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    IconButton(
-                        onClick = onIntervalsExpandChange
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
-                            imageVector = if (intervalsExpanded) {
-                                Icons.Default.ArrowDropUp
-                            } else {
-                                Icons.Default.ArrowDropDown
-                            },
-                            contentDescription = "Expandir o contraer intervalos"
+                        Text(
+                            text = "Aplicar Intervalos",
+                            modifier = Modifier.weight(1f),
+                            fontSize = 17.sp,
+                            fontWeight = FontWeight.SemiBold
                         )
+
+                        IconButton(
+                            onClick = onIntervalsExpandChange
+                        ) {
+                            Icon(
+                                imageVector = if (intervalsExpanded) {
+                                    Icons.Default.ArrowDropUp
+                                } else {
+                                    Icons.Default.ArrowDropDown
+                                },
+                                contentDescription = "Expandir o contraer intervalos"
+                            )
+                        }
                     }
                 }
 

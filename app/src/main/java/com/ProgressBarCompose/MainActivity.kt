@@ -14,6 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ProgressBarCompose.ui.ProgressBarScreen
 import com.ProgressBarCompose.ui.theme.MyApplicationTheme
 import com.ProgressBarCompose.viewmodel.ProgressBarViewModel
+import androidx.compose.foundation.layout.imePadding
 
 class MainActivity : ComponentActivity() {
 
@@ -30,7 +31,9 @@ class MainActivity : ComponentActivity() {
                 val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
                 Scaffold(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .imePadding(),
                 ) { innerPadding ->
 
                     ProgressBarScreen(
@@ -50,7 +53,9 @@ class MainActivity : ComponentActivity() {
                         onSettingsShowImageChange = viewModel::updateSettingsShowImage,
                         onSettingsShowCurrentValueChange = viewModel::updateSettingsShowCurrentValue,
                         onSettingsShowMaxValueChange = viewModel::updateSettingsShowMaxValue,
-                        modifier = Modifier.padding(innerPadding),
+                        modifier = Modifier.padding(
+                            top = innerPadding.calculateTopPadding()
+                        ),
                         onSettingsMaxValueChange = viewModel::updateSettingsMaxValue,
                         onSettingsMinValueChange = viewModel::updateSettingsMinValue,
                         onSettingsCurrentValueChange = viewModel::updateSettingsCurrentValue,
@@ -61,6 +66,7 @@ class MainActivity : ComponentActivity() {
                         onSettingsAnimationsEnabledChange = viewModel::updateSettingsAnimationsEnabled,
                         onApplySettings = viewModel::applySettings,
                         onResetSettings = viewModel::resetSettingsDraft
+
                     )
                 }
             }
